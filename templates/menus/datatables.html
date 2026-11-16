@@ -1,0 +1,42 @@
+<!-- CSS de DataTable (versión para Bootstrap 4, como SB Admin 2) -->
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.bootstrap4.min.css">
+
+<!-- CDN DataTable -->
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.min.js"></script>
+<!-- JS de DataTable (botones) -->
+<script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.colVis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script>
+    // La columna "Acciones" no se exporta ni se ordena
+    const opcionesExport = { columns: ':not(.no-export)' };
+
+    const table = new DataTable('#miTabla', {
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json',
+        },
+        columnDefs: [
+            { targets: 'no-export', orderable: false }
+        ],
+        layout: {
+            topStart: {
+                buttons: [
+                    { extend: 'copyHtml5', exportOptions: opcionesExport },
+                    { extend: 'excelHtml5', exportOptions: opcionesExport },
+                    { extend: 'csvHtml5', exportOptions: opcionesExport },
+                    { extend: 'pdfHtml5', exportOptions: opcionesExport },
+                    { extend: 'print', exportOptions: opcionesExport },
+                    'colvis'
+                ]
+            }
+        }
+    });
+</script>

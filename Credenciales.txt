@@ -1,0 +1,20 @@
+Administrador:
+-admin:
+1234
+-pedro:
+123
+Guias:
+-camila.rojas:
+Guia2026*
+-diego.fuentes:
+Guia2026*
+Turista:
+-turista1:
+Turista2026*
+-turista2:
+Turista2026*
+
+
+Base de datos 
+admin
+1234

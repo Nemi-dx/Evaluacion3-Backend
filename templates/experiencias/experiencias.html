@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %} Experiencias {% endblock %}
+
+{% block contenido %}
+
+<h1 class="h3 mb-4 text-gray-800">Experiencias</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Listado de Experiencias</h6>
+        <a href="{% url 'addExperiencia' %}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Agregar Experiencia</a>
+    </div>
+    <div class="card-body">
+        {% if experiencias %}
+        <div class="table-responsive">
+            <table id="miTabla" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Categoría</th>
+                        <th>Fecha</th>
+                        <th>Precio</th>
+                        <th>Cupo máximo</th>
+                        <th>Estado</th>
+                        <th>Creador</th>
+                        <th class="no-export">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in experiencias %}
+                    <tr>
+                        <td>{{e.id}}</td>
+                        <td>{{e.titulo}}</td>
+                        <td>{{e.categoria}}</td>
+                        <td>{{e.fecha|date:"Y-m-d H:i"}}</td>
+                        <td>${{e.precio}}</td>
+                        <td>{{e.cupo_maximo}}</td>
+                        <td>{% if e.activo %}Activa{% else %}Inactiva{% endif %}</td>
+                        <td>{{e.creador.username}}</td>
+                        <td>
+                            <a href="{% url 'editarExperiencia' e.id %}" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>
+                            {% if user.perfil.rol == 'admin' %}
+                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-url="{% url 'eliminarExperiencia' e.id %}" data-nombre="la experiencia {{e.titulo}}" data-aviso="Se eliminarán también sus reservas."><i class="fas fa-trash"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-0">No hay experiencias</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% if experiencias %}
+{% include 'menus/datatables.html' %}
+{% endif %}
+{% endblock %}

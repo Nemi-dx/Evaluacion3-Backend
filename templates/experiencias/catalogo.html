@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Catálogo {% endblock %}
+
+{% block contenido %}
+
+<h1 class="h3 mb-4 text-gray-800">Catálogo de Experiencias</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Experiencias disponibles</h6>
+    </div>
+    <div class="card-body">
+        {% if experiencias %}
+        <div class="table-responsive">
+            <table id="miTabla" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Experiencia</th>
+                        <th>Categoría</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Precio</th>
+                        <th>Inscritos / Cupo</th>
+                        <th class="no-export">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in experiencias %}
+                    <tr>
+                        <td>{{e.titulo}}</td>
+                        <td>{{e.categoria}}</td>
+                        <td>{{e.descripcion}}</td>
+                        <td>{{e.fecha|date:"Y-m-d H:i"}}</td>
+                        <td>${{e.precio}}</td>
+                        <td>{{e.inscripcion_set.count}} / {{e.cupo_maximo}}</td>
+                        <td>
+                            {% if e.id in inscritas %}
+                            <span class="badge badge-primary">Ya inscrito</span>
+                            {% elif e.inscripcion_set.count >= e.cupo_maximo %}
+                            <span class="badge badge-secondary">Sin cupos</span>
+                            {% else %}
+                            <a href="{% url 'inscribirse' e.id %}" class="btn btn-primary btn-sm">Inscribirme</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-0">No hay experiencias disponibles</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% if experiencias %}
+{% include 'menus/datatables.html' %}
+{% endif %}
+{% endblock %}

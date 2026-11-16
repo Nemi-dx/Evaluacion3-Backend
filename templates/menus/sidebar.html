@@ -1,0 +1,86 @@
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Aventuras del Sur</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Inicio</span></a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            {% if user.perfil.rol == 'admin' %}
+            <div class="sidebar-heading">Administración</div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ListaUsuarios' %}">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Usuarios</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ListaCategorias' %}">
+                    <i class="fas fa-fw fa-tags"></i>
+                    <span>Categorías</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ListaExperiencias' %}">
+                    <i class="fas fa-fw fa-hiking"></i>
+                    <span>Experiencias</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ListaReservas' %}">
+                    <i class="fas fa-fw fa-ticket-alt"></i>
+                    <span>Reservas</span></a>
+            </li>
+
+            {% elif user.perfil.rol == 'guia' %}
+            <div class="sidebar-heading">Guía / Operador</div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ListaExperiencias' %}">
+                    <i class="fas fa-fw fa-hiking"></i>
+                    <span>Mis experiencias</span></a>
+            </li>
+
+            {% elif user.perfil.rol == 'turista' %}
+            <div class="sidebar-heading">Turista</div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'catalogo' %}">
+                    <i class="fas fa-fw fa-compass"></i>
+                    <span>Catálogo</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ListaReservas' %}">
+                    <i class="fas fa-fw fa-ticket-alt"></i>
+                    <span>Mis reservas</span></a>
+            </li>
+
+            {% else %}
+            <div class="sidebar-heading">Acceso</div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">
+                    <i class="fas fa-fw fa-sign-in-alt"></i>
+                    <span>Iniciar sesión</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">
+                    <i class="fas fa-fw fa-user-plus"></i>
+                    <span>Crear cuenta</span></a>
+            </li>
+            {% endif %}
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->

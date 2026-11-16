@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %} Usuarios {% endblock %}
+
+{% block contenido %}
+
+<h1 class="h3 mb-4 text-gray-800">Usuarios</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Listado de Usuarios</h6>
+        <a href="{% url 'addUsuario' %}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Agregar Usuario</a>
+    </div>
+    <div class="card-body">
+        {% if perfiles %}
+        <div class="table-responsive">
+            <table id="miTabla" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th class="no-export">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in perfiles %}
+                    <tr>
+                        <td>{{p.id}}</td>
+                        <td>{{p.user.username}}</td>
+                        <td>{{p.user.first_name}} {{p.user.last_name}}</td>
+                        <td>{{p.user.email}}</td>
+                        <td>{{p.get_rol_display}}</td>
+                        <td>
+                            <a href="{% url 'editarUsuario' p.id %}" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>
+                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-url="{% url 'eliminarUsuario' p.id %}" data-nombre="el usuario {{p.user.username}}" data-aviso="Se eliminarán también sus experiencias y sus reservas."><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-0">No hay usuarios</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% if perfiles %}
+{% include 'menus/datatables.html' %}
+{% endif %}
+{% endblock %}

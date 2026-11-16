@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block contenido %}
+
+{% if user.is_authenticated %}
+
+<div class="text-center my-4">
+    <h1 class="h2 text-gray-900">Bienvenido a Aventuras del Sur, {{ user.get_full_name|default:user.username }}</h1>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <p><strong>Usuario:</strong> {{ user.username }}</p>
+                <p><strong>Nombre:</strong> {{ user.get_full_name|default:"-" }}</p>
+                <p><strong>Rol:</strong> <span class="badge badge-primary">{{ user.perfil.get_rol_display }}</span></p>
+                <p><strong>Email:</strong> {{ user.email|default:"-" }}</p>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-body text-center p-5">
+                <i class="fas fa-tree fa-5x text-primary mb-4"></i>
+                <h1 class="h2 text-gray-900">Ecoparque y Reserva Natural "Aventuras del Sur"</h1>
+                <p class="text-gray-600 mt-3">Crea tu cuenta y reserva tu próxima aventura.</p>
+                <hr>
+                <a href="{% url 'login' %}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Crear cuenta</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

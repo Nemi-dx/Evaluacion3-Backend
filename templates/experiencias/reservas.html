@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %} Reservas {% endblock %}
+
+{% block contenido %}
+
+<h1 class="h3 mb-4 text-gray-800">Reservas</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">{% if user.perfil.rol == 'admin' %}Todas las reservas{% else %}Mis reservas{% endif %}</h6>
+        {% if user.perfil.rol == 'admin' %}
+        <a href="{% url 'addReserva' %}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Agregar Reserva</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% if reservas %}
+        <div class="table-responsive">
+            <table id="miTabla" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Turista</th>
+                        <th>Experiencia</th>
+                        <th>Fecha de la experiencia</th>
+                        <th>Fecha de inscripción</th>
+                        <th>Estado de pago</th>
+                        <th class="no-export">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reservas %}
+                    <tr>
+                        <td>{{r.id}}</td>
+                        <td>{{r.usuario.username}}</td>
+                        <td>{{r.experiencia.titulo}}</td>
+                        <td>{{r.experiencia.fecha|date:"Y-m-d H:i"}}</td>
+                        <td>{{r.fecha_inscripcion|date:"Y-m-d H:i"}}</td>
+                        <td>{{r.get_estado_pago_display}}</td>
+                        <td>
+                            {% if user.perfil.rol == 'admin' %}
+                            <a href="{% url 'editarReserva' r.id %}" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>
+                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-url="{% url 'eliminarReserva' r.id %}" data-nombre="la reserva de {{r.usuario.username}} en {{r.experiencia.titulo}}"><i class="fas fa-trash"></i></a>
+                            {% elif r.estado_pago == 'pendiente' %}
+                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal" data-url="{% url 'cancelarReserva' r.id %}" data-nombre="tu reserva de {{r.experiencia.titulo}}"><i class="fas fa-times"></i> Cancelar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-0">No hay reservas</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% if reservas %}
+{% include 'menus/datatables.html' %}
+{% endif %}
+{% endblock %}
